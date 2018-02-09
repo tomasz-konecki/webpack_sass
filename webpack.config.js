@@ -12,48 +12,61 @@ const plugins = [new HtmlWebpackPlugin({
 })];
 
 if (env === 'production') {
-    plugins.push(
-        new webpack.optimize.UglifyJsPlugin(),
-        new OptimizeJsPlugin({
-            sourceMap: false
-        })
-    );
+  plugins.push(
+    new webpack.optimize.UglifyJsPlugin(),
+    new OptimizeJsPlugin({
+      sourceMap: false
+    })
+  );
 }
 
 module.exports = {
-  entry: [
-    'react-hot-loader/patch',
-    './src/index.js'
-  ],
-  output: {
-    path: __dirname + '/dist',
-    filename: 'app.bundle.js'
-  },
+    entry: [
+      'react-hot-loader/patch',
+      './src/index.js'
+    ],
+    output: {
+      path: __dirname + '/dist',
+      filename: 'app.bundle.js'
+    },
 
-  module: {
-    rules: [{
-        test: /\.js$/,
-        loader: "babel-loader",
-        exclude: __dirname + '/node_modules'
-      },
-      {
-        test: /\.scss$/,
-        use: [{
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader',
+    module: {
+      rules: [{
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
             options: {
-              modules: true
+              presets: [
+                require.resolve('babel-preset-react'), [require.resolve('babel-preset-es2015'), {
+                  "modules": false
+                }],
+                require.resolve('babel-preset-stage-0')
+              ]
             }
-          },
-          {
-            loader: 'sass-loader'
           }
-        ]
-      }
-    ]
-  },
+        },
+        {
+          test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+          loader: 'url-loader?limit=10000',
+        },
+        {
+          test: /\.scss$/,
+          exclude: /node_modules/,
+          use: [
+            'style-loader',
+            'css-loader',
+            'sass-loader?sourceMap',
+          ],
+        },
+        {
+          test: /(\.css$)/,
+          use: [{
+            loader: "style-loader"
+          }, {
+            loader: "css-loader"
+          }]
+        },
 
-  plugins: plugins
-}
+        plugins: plugins
+      }
