@@ -7,7 +7,9 @@ class Box extends React.Component {
   }
   render() {
     return (
-      <div>{this.props.text}</div>
+      <div className="box">
+        <p>{this.props.text}</p>
+      </div>
     )
   }
 }
