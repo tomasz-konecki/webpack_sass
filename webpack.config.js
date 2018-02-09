@@ -38,7 +38,7 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               presets: [
-                require.resolve('babel-preset-react'), [require.resolve('babel-preset-es2015'), {
+                require.resolve('babel-preset-react'), [require.resolve('babel-preset-env'), {
                   "modules": false
                 }],
                 require.resolve('babel-preset-stage-0')
@@ -66,7 +66,8 @@ module.exports = {
           }, {
             loader: "css-loader"
           }]
-        },
-
+        }
+]},
         plugins: plugins
-      }
+
+}
